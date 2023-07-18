@@ -1,9 +1,6 @@
 # This is the Cortex-M4F
 target extended-remote :3334
 
-# This is the Cortex-M0+
-# target extended-remote :3333
-
 # print demangled symbols
 set print asm-demangle on
 

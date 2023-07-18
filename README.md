@@ -5,20 +5,31 @@ A demo project for the CY8C624ABZI-S2D44A0 SoC, as fitted to the
 
 ## Building
 
+There are multiple binary crates in this repository.
+
+To run a Cortex-M4F binary:
+
 ``` console
 $ export OPENOCD_ROOT=/where/you/installed/infineon/openocd
 $ ${OPENOCD_ROOT}/bin/openocd -s ${OPENOCD_ROOT}/scripts
 <now open another terminal>
 $ rustup target add thumbv7em-none-eabihf
 $ export RUST_GDB=arm-none-eabi-gdb
-$ cargo run --target=thumbv7em-none-eabihf --release
+$ cd psoc6-demo-cm4
+$ cargo run --release
 ```
 
-## VS Code
+To run a Cortex-M0+ binary:
 
-This template includes launch configurations for debugging CortexM programs with Visual Studio Code located in the `.vscode/` directory.  
-See [.vscode/README.md](./.vscode/README.md) for more information.  
-If you're not using VS Code, you can safely delete the directory from the generated project.
+``` console
+$ export OPENOCD_ROOT=/where/you/installed/infineon/openocd
+$ ${OPENOCD_ROOT}/bin/openocd -s ${OPENOCD_ROOT}/scripts
+<now open another terminal>
+$ rustup target add thumbv6m-none-eabihf
+$ export RUST_GDB=arm-none-eabi-gdb
+$ cd psoc6-demo-cm0
+$ cargo run --release
+```
 
 # License
 

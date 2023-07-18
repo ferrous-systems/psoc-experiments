@@ -2,7 +2,7 @@
 authors = ["Jonathan Pallant (Ferrous Systems) <jonathan.pallant@ferrous-systems.com>"]
 edition = "2021"
 readme = "README.md"
-name = "psoc6-demo"
+name = "psoc6-cm0-hello-world"
 version = "0.1.0"
 
 [dependencies]
@@ -14,7 +14,7 @@ psoc6-pac = { path = "../psoc6-pac" }
 
 # this lets you use `cargo fix`!
 [[bin]]
-name = "psoc6-demo"
+name = "psoc6-cm0-hello-world"
 test = false
 bench = false
 
