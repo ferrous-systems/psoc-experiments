@@ -33,6 +33,27 @@ $ cd psoc6-demo-cm0
 $ cargo run --release
 ```
 
+Document AN215656 says:
+
+> After CM0+ executes the system and security code, it executes the application
+> code. In the application code, CM0+ may release the CM4 reset, causing CM4 to
+> start executing its application code.
+
+So if you want your code to run outside of the debugger, compile it for the
+Cortex-M0+ (thumbv6m-none-eabi). Also if you want your code to run outside of
+the debugger, you can't use semihosting.
+
+## Interrupts
+
+The SVD file (and hence the PAC) describes all 187-odd interrupts. However, the
+Cortex-M0+ core only has 8 external and 8 internal interrupts. You therefore
+can't use the PAC in "rt" mode on the Cortex-M0+ core - the interrupt vector
+table won't fit.
+
+Also, pending any kind of interrupt (e.g. `svc 0`) causes the core to double
+fault. No idea why, but it stops things like RTIC working. Happens in either
+core.
+
 # License
 
 This template is licensed under either of

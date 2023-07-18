@@ -1,6 +1,10 @@
 {
     "rust-analyzer.linkedProjects": [
         "./psoc6-cm0-hello-world/Cargo.toml",
-        "./psoc6-cm4-hello-world/Cargo.toml"
-    ]
+        "./psoc6-cm4-hello-world/Cargo.toml",
+        "./psoc6-cm0-interrupts/Cargo.toml",
+        "./psoc6-cm4-interrupts/Cargo.toml",
+        "./psoc6-cm4-rtic/Cargo.toml"
+    ],
+    "cortex-debug.variableUseNaturalFormat": false
 }

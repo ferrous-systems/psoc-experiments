@@ -1,0 +1,5 @@
+[target.thumbv7em-none-eabihf]
+runner = "rust-gdb -q -x openocd.gdb"
+
+[build]
+target = "thumbv7em-none-eabihf"     # Cortex-M4
