@@ -1,4 +1,3 @@
-#![deny(unsafe_code)]
 #![deny(warnings)]
 #![no_main]
 #![no_std]
@@ -21,6 +20,12 @@ mod app {
 
     #[init(local = [x: u32 = 0])]
     fn init(cx: init::Context) -> (Shared, Local, init::Monotonics) {
+        hprintln!("VTOR = 0x{:08x}", cx.core.SCB.vtor.read());
+        unsafe {
+            cx.core.SCB.vtor.write(0x1000_0000);
+        }
+        hprintln!("VTOR is now = 0x{:08x}", cx.core.SCB.vtor.read());
+
         // Initialize the monotonic timer (SysTick rate on PSoC6 is 50 MHz)
         let mono = Systick::new(cx.core.SYST, 50_000_000);
 
@@ -41,7 +46,7 @@ mod app {
             w
         });
 
-        on::spawn_after(1.secs()).unwrap();
+        on::spawn().unwrap();
 
         hprintln!(">> init complete");
 
@@ -51,20 +56,29 @@ mod app {
     #[idle]
     fn idle(_: idle::Context) -> ! {
         loop {
-            hprintln!(">> idle");
-            // cortex_m::asm::wfe();
+            cortex_m::asm::wfe();
         }
     }
 
     #[task]
     fn on(_: on::Context) {
         hprintln!(">> on");
+        let p = unsafe { psoc6_pac::Peripherals::steal() };
+        p.GPIO.prt13.out_clr.write(|w| {
+            w.out7().set_bit();
+            w
+        });
         off::spawn_at(monotonics::now() + 1.secs()).unwrap();
     }
 
     #[task]
     fn off(_: off::Context) {
         hprintln!(">> off");
+        let p = unsafe { psoc6_pac::Peripherals::steal() };
+        p.GPIO.prt13.out_set.write(|w| {
+            w.out7().set_bit();
+            w
+        });
         on::spawn_at(monotonics::now() + 1.secs()).unwrap();
     }
 }
