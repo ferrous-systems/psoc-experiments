@@ -11,25 +11,51 @@ There are multiple binary crates in this repository.
 
 To run a Cortex-M4F binary:
 
-``` console
+```sh
 $ export OPENOCD_ROOT=/where/you/installed/infineon/openocd
+
+# The scripts path might be different depending on whether you
+# have built and installed Infineon's openocd yourself or if
+# have downloaded the pre-built Cypress toolset. This tutorial
+# assumes the latter.
 $ ${OPENOCD_ROOT}/bin/openocd -s ${OPENOCD_ROOT}/scripts
-<now open another terminal>
+
+# <now open another terminal>
 $ rustup target add thumbv7em-none-eabihf
+# On newer Ubuntu/Debian machines you may not need this, so
+# ignore. `gdb-multiarch` on the newer OS takes care of this
+# and setting this will actually throw an error. Instead,
+# edit the file `.cargo/config.toml` and replace 
+# runner = "rust-gdb -q -x openocd.gdb"
+# with
+# runner = "gdb-multiarch -q -x openocd.gdb"
 $ export RUST_GDB=arm-none-eabi-gdb
-$ cd psoc6-demo-cm4
+$ cd psoc6-cm4-hello-world
 $ cargo run --release
 ```
 
 To run a Cortex-M0+ binary:
 
-``` console
+```sh
 $ export OPENOCD_ROOT=/where/you/installed/infineon/openocd
+
+# The scripts path might be different depending on whether you
+# have built and installed Infineon's openocd yourself or if
+# have downloaded the pre-built Cypress toolset. This tutorial
+# assumes the latter.
 $ ${OPENOCD_ROOT}/bin/openocd -s ${OPENOCD_ROOT}/scripts
-<now open another terminal>
-$ rustup target add thumbv6m-none-eabihf
+
+# <now open another terminal>
+$ rustup target add thumbv6m-none-eabi
+# On newer Ubuntu/Debian machines you may not need this, so
+# ignore. `gdb-multiarch` on the newer OS takes care of this
+# and setting this will actually throw an error. Instead,
+# edit the file `.cargo/config.toml` and replace 
+# runner = "rust-gdb -q -x openocd.gdb"
+# with
+# runner = "gdb-multiarch -q -x openocd.gdb"
 $ export RUST_GDB=arm-none-eabi-gdb
-$ cd psoc6-demo-cm0
+$ cd psoc6-cm0-hello-world
 $ cargo run --release
 ```
 
