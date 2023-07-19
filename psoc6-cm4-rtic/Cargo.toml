@@ -1,0 +1,22 @@
+[package]
+edition = "2021"
+name = "psoc6-cm0-rtic"
+version = "0.1.0"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+bare-metal = "1.0"
+cortex-m = {version = "0.7.0", features = ["inline-asm"]}
+cortex-m-rt = "0.7"
+cortex-m-rtic = "1"
+panic-semihosting = "0.6"
+cortex-m-semihosting = "0.5"
+psoc6-pac = {path = "../psoc6-pac", features = ["rt"]}
+systick-monotonic = "1.0.0"
+
+[profile.release]
+lto = true
+debug = true
+opt-level ="s"
+codegen-units = 1

@@ -1,8 +1,7 @@
 **/*.rs.bk
 .#*
 .gdb_history
-Cargo.lock
-target/
+*/target/
 
 # editor files
 .vscode/*
