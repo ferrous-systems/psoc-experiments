@@ -33,12 +33,6 @@ $ cd psoc6-demo-cm0
 $ cargo run --release
 ```
 
-Document AN215656 says:
-
-> After CM0+ executes the system and security code, it executes the application
-> code. In the application code, CM0+ may release the CM4 reset, causing CM4 to
-> start executing its application code.
-
 So if you want your code to run outside of the debugger, compile it for the
 Cortex-M0+ (thumbv6m-none-eabi). Also if you want your code to run outside of
 the debugger, you can't use semihosting.
@@ -50,9 +44,62 @@ Cortex-M0+ core only has 8 external and 8 internal interrupts. You therefore
 can't use the PAC in "rt" mode on the Cortex-M0+ core - the interrupt vector
 table won't fit.
 
-Also, pending any kind of interrupt (e.g. `svc 0`) causes the core to double
-fault. No idea why, but it stops things like RTIC working. Happens in either
-core.
+## Booting
+
+Document AN215656 *PSoC™ 6 MCU dual-core system design* says:
+
+> After CM0+ executes the system and security code, it executes the application
+> code. In the application code, CM0+ may release the CM4 reset, causing CM4 to
+> start executing its application code.
+
+When the system comes out of reset normally, the Cortex-M0+ starts executing
+from the on-board ROM and the Cortex-M4 is held in reset. The ROM bootloader
+will at some point jump to the reset routine defined in the vector table at the
+start of flash. However, it will not update the Cortex-M0+ VTOR register, so any
+exceptions or interrupts will still be pointing at the ROM and will not work. In
+practice this seems to cause a bounce off to random addresses and a double
+fault.
+
+The mechanism described in AN215656 *PSoC™ 6 MCU dual-core system design* is:
+
+1. The ROM runs on Cortex-M0+.
+2. The ROM jumps to your reset routine in flash.
+3. The code running on the Cortex-M0+ should set up the Cortex-M4's VTOR, using
+   a special Cypress system register (because the Cortex-M4's VTOR isn't
+   available to the Cortex-M0+ as they are in the private core-local address
+   range)..
+4. The code on the Cortex-M0+ should use the same block to take the Cortex-M4 out of reset.
+
+So I imagine your firmware would look like:
+
+```text
+0x1000_0000 +---------------------------+
+            | Stack Ptr for Cortex-M0+  |
+            | Reset Ptr for Cortex-M0+  |
+            | Exceptions for Cortex-M0+ |
+            ¦ ...                       ¦
+            | Interrupts for Cortex-M0+ |
+            ¦ ...                       ¦
+            | Code/Data  for Cortex-M0+ |
+            ¦ ...                       ¦
+0x1001_0000 +---------------------------+
+            | Stack Ptr for Cortex-M4   |
+            | Reset Ptr for Cortex-M4   |
+            | Exceptions for Cortex-M4  |
+            ¦ ...                       ¦
+            | Interrupts for Cortex-M4  |
+            ¦ ...                       ¦
+            | Code/Data  for Cortex-M4  |
+            ¦ ...                       ¦
+            +---------------------------+
+```
+
+Your Cortex-M0+ and Cortex-M4 binaries will need different `memory.x` files so
+they each get their own piece of RAM and Flash, and you then need to join them
+together. You could do that as a hex-merge, or by including the Cortex-M4
+firmware as a static `[u8; nnnn]` within the Cortex-M0+ firmware, located within
+an appropriate section so it is linked into memory in the Cortex-M0+ binary at
+the same place the Cortex-M4 linker thought it was going to be.
 
 # License
 
