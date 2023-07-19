@@ -9,8 +9,9 @@ Schematic: <https://www.infineon.com/dgdl/Infineon-CY8CPROTO-062-4343W_Schematic
 
 There are multiple binary crates in this repository.
 
-To run a Cortex-M4F binary:
+### To run a Cortex-M4F binary
 
+1. Open terminal
 ```sh
 $ export OPENOCD_ROOT=/where/you/installed/infineon/openocd
 
@@ -19,8 +20,9 @@ $ export OPENOCD_ROOT=/where/you/installed/infineon/openocd
 # have downloaded the pre-built Cypress toolset. This tutorial
 # assumes the latter.
 $ ${OPENOCD_ROOT}/bin/openocd -s ${OPENOCD_ROOT}/scripts
-
-# <now open another terminal>
+```
+2. Open another terminal
+```sh
 $ rustup target add thumbv7em-none-eabihf
 # On newer Ubuntu/Debian machines you may not need this, so
 # ignore. `gdb-multiarch` on the newer OS takes care of this
@@ -34,8 +36,9 @@ $ cd psoc6-cm4-hello-world
 $ cargo run --release
 ```
 
-To run a Cortex-M0+ binary:
+### To run a Cortex-M0+ binary
 
+1. Open terminal
 ```sh
 $ export OPENOCD_ROOT=/where/you/installed/infineon/openocd
 
@@ -44,8 +47,9 @@ $ export OPENOCD_ROOT=/where/you/installed/infineon/openocd
 # have downloaded the pre-built Cypress toolset. This tutorial
 # assumes the latter.
 $ ${OPENOCD_ROOT}/bin/openocd -s ${OPENOCD_ROOT}/scripts
-
-# <now open another terminal>
+```
+2. Open another terminal
+```sh
 $ rustup target add thumbv6m-none-eabi
 # On newer Ubuntu/Debian machines you may not need this, so
 # ignore. `gdb-multiarch` on the newer OS takes care of this
