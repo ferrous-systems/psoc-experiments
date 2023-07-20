@@ -3,7 +3,11 @@
 A demo project for the CY8C624ABZI-S2D44A0 SoC, as fitted to the
 *CY8CPROTO-062-4343W PSoC 6 Wi-Fi BT Prototyping kit*.
 
+
 Schematic: <https://www.infineon.com/dgdl/Infineon-CY8CPROTO-062-4343W_Schematic-PCBDesignData-v01_00-EN.pdf?fileId=8ac78c8c7d0d8da4017d0f010c6d183a>
+
+Toolset from Infineon: https://softwaretools.infineon.com/tools/com.ifx.tb.tool.cypressprogrammer
+We used Version 4.2.0.999 for this work.
 
 ## Building
 
