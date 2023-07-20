@@ -14,29 +14,28 @@ There are multiple binary crates in this repository.
 1. Open terminal
 
     ```sh
-    $ export OPENOCD_ROOT=/where/you/installed/infineon/openocd
+    export OPENOCD_ROOT=/where/you/installed/infineon/openocd
 
     # The scripts path might be different depending on whether you
-    # have built and installed Infineon's openocd yourself or if
+    # have built and installed Infineons openocd yourself or if
     # have downloaded the pre-built Cypress toolset. This tutorial
     # assumes the latter.
-    $ ${OPENOCD_ROOT}/bin/openocd -s ${OPENOCD_ROOT}/scripts
+
+    ${OPENOCD_ROOT}/bin/openocd -s ${OPENOCD_ROOT}/scripts
     ```
 
 2. Open another terminal
 
     ```sh
-    $ rustup target add thumbv7em-none-eabihf
-    # On newer Ubuntu/Debian machines you may not need this, so
-    # ignore. `gdb-multiarch` on the newer OS takes care of this
-    # and setting this will actually throw an error. Instead,
-    # edit the file `.cargo/config.toml` and replace 
-    # runner = "rust-gdb -q -x openocd.gdb"
-    # with
-    # runner = "gdb-multiarch -q -x openocd.gdb"
-    $ export RUST_GDB=arm-none-eabi-gdb
-    $ cd psoc6-cm4-hello-world
-    $ cargo run --release
+    rustup target add thumbv7em-none-eabihf
+
+    # If you have another installation of GDB,
+    # e.g. `gdb-multiarch`, set
+    # `export RUST_GDB=gdb-multiarch`
+
+    export RUST_GDB=arm-none-eabi-gdb
+    cd psoc6-cm4-hello-world
+    cargo run --release
     ```
 
 ### To run a Cortex-M0+ binary
@@ -44,29 +43,28 @@ There are multiple binary crates in this repository.
 1. Open terminal
 
     ```sh
-    $ export OPENOCD_ROOT=/where/you/installed/infineon/openocd
+    export OPENOCD_ROOT=/where/you/installed/infineon/openocd
 
     # The scripts path might be different depending on whether you
-    # have built and installed Infineon's openocd yourself or if
+    # have built and installed Infineons openocd yourself or if
     # have downloaded the pre-built Cypress toolset. This tutorial
     # assumes the latter.
-    $ ${OPENOCD_ROOT}/bin/openocd -s ${OPENOCD_ROOT}/scripts
+
+    ${OPENOCD_ROOT}/bin/openocd -s ${OPENOCD_ROOT}/scripts
     ```
 
 2. Open another terminal
   
     ```sh
-    $ rustup target add thumbv6m-none-eabi
-    # On newer Ubuntu/Debian machines you may not need this, so
-    # ignore. `gdb-multiarch` on the newer OS takes care of this
-    # and setting this will actually throw an error. Instead,
-    # edit the file `.cargo/config.toml` and replace 
-    # runner = "rust-gdb -q -x openocd.gdb"
-    # with
-    # runner = "gdb-multiarch -q -x openocd.gdb"
-    $ export RUST_GDB=arm-none-eabi-gdb
-    $ cd psoc6-cm0-hello-world
-    $ cargo run --release
+    rustup target add thumbv6m-none-eabi
+
+    # If you have another installation of GDB,
+    # e.g. `gdb-multiarch`, set
+    # `export RUST_GDB=gdb-multiarch`
+
+    export RUST_GDB=arm-none-eabi-gdb
+    cd psoc6-cm0-hello-world
+    cargo run --release
     ```
 
 So if you want your code to run outside of the debugger, compile it for the
