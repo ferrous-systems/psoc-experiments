@@ -3,17 +3,29 @@
 A demo project for the CY8C624ABZI-S2D44A0 SoC, as fitted to the
 *CY8CPROTO-062-4343W PSoC 6 Wi-Fi BT Prototyping kit*.
 
-
 Schematic: <https://www.infineon.com/dgdl/Infineon-CY8CPROTO-062-4343W_Schematic-PCBDesignData-v01_00-EN.pdf?fileId=8ac78c8c7d0d8da4017d0f010c6d183a>
-
-Toolset from Infineon: https://softwaretools.infineon.com/tools/com.ifx.tb.tool.cypressprogrammer
-We used Version 4.2.0.999 for this work.
 
 ## Building
 
 There are multiple binary crates in this repository.
+There are multiple cores in this SoC.
 
-### To run a Cortex-M4F binary
+### Prerequisites
+
+1. Install correct Rust targets for both cores.
+
+    ```sh
+    rustup target add thumbv7em-none-eabihf
+    rustup target add thumbv6m-none-eabi
+    ```
+
+2. Make sure you have GDB installed.
+3. Make sure your `openocd` installation is the patched version from Infineon.
+    Regular off-the-shelf won't work. Download the
+    [Toolset from Infineon](https://softwaretools.infineon.com/tools/com.ifx.tb.tool.cypressprogrammer).
+    We used Version 4.2.0.999 for this work.
+
+### Run a Cortex-M4F binary
 
 1. Open terminal
 
@@ -31,8 +43,6 @@ There are multiple binary crates in this repository.
 2. Open another terminal
 
     ```sh
-    rustup target add thumbv7em-none-eabihf
-
     # If you have another installation of GDB,
     # e.g. `gdb-multiarch`, set
     # `export RUST_GDB=gdb-multiarch`
@@ -42,7 +52,7 @@ There are multiple binary crates in this repository.
     cargo run --release
     ```
 
-### To run a Cortex-M0+ binary
+### Run a Cortex-M0+ binary
 
 1. Open terminal
 
@@ -60,8 +70,6 @@ There are multiple binary crates in this repository.
 2. Open another terminal
   
     ```sh
-    rustup target add thumbv6m-none-eabi
-
     # If you have another installation of GDB,
     # e.g. `gdb-multiarch`, set
     # `export RUST_GDB=gdb-multiarch`
@@ -75,14 +83,20 @@ So if you want your code to run outside of the debugger, compile it for the
 Cortex-M0+ (thumbv6m-none-eabi). Also if you want your code to run outside of
 the debugger, you can't use semihosting.
 
-## Interrupts
+### Run bootloader application
+
+Check out [psoc6-cm0-bootloader/README.md](./psoc6-cm0-bootloader/README.md)
+for instructions.
+
+## Misc. notes
+### Interrupts
 
 The SVD file (and hence the PAC) describes all 187-odd interrupts. However, the
 Cortex-M0+ core only has 8 external and 8 internal interrupts. You therefore
 can't use the PAC in "rt" mode on the Cortex-M0+ core - the interrupt vector
 table won't fit.
 
-## Booting
+### Booting
 
 Document AN215656 *PSoC™ 6 MCU dual-core system design* says:
 
@@ -139,13 +153,12 @@ firmware as a static `[u8; nnnn]` within the Cortex-M0+ firmware, located within
 an appropriate section so it is linked into memory in the Cortex-M0+ binary at
 the same place the Cortex-M4 linker thought it was going to be.
 
-# License
+## License
 
 This template is licensed under either of
 
 - Apache License, Version 2.0 ([LICENSE-APACHE](LICENSE-APACHE) or
-  http://www.apache.org/licenses/LICENSE-2.0)
-
+  <http://www.apache.org/licenses/LICENSE-2.0>)
 - MIT license ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT)
 
 at your option.
