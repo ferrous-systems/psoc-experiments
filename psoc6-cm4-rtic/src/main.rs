@@ -6,7 +6,7 @@ use panic_semihosting as _;
 
 #[rtic::app(device = psoc6_pac, peripherals = true, dispatchers = [SCB_12_INTERRUPT])]
 mod app {
-    use cortex_m_semihosting::hprintln;
+    // use cortex_m_semihosting::hprintln;
     use systick_monotonic::*;
 
     #[monotonic(binds = SysTick, default = true)]
@@ -20,11 +20,15 @@ mod app {
 
     #[init(local = [x: u32 = 0])]
     fn init(cx: init::Context) -> (Shared, Local, init::Monotonics) {
-        hprintln!("VTOR = 0x{:08x}", cx.core.SCB.vtor.read());
-        unsafe {
-            cx.core.SCB.vtor.write(0x1000_0000);
+        // Fixup the VTOR that the ROM/bootloader didn't set
+        extern "C" {
+            static _svectors: u32;
         }
-        hprintln!("VTOR is now = 0x{:08x}", cx.core.SCB.vtor.read());
+        // hprintln!("VTOR was: 0x{:08x}", cx.core.SCB.vtor.read());
+        unsafe {
+            cx.core.SCB.vtor.write(&_svectors as *const u32 as u32);
+        }
+        // hprintln!("VTOR is : 0x{:08x}", cx.core.SCB.vtor.read());
 
         // Initialize the monotonic timer (SysTick rate on PSoC6 is 50 MHz)
         let mono = Systick::new(cx.core.SYST, 50_000_000);
@@ -48,7 +52,7 @@ mod app {
 
         on::spawn().unwrap();
 
-        hprintln!(">> init complete");
+        // hprintln!(">> init complete");
 
         (Shared {}, Local {}, init::Monotonics(mono))
     }
@@ -62,7 +66,7 @@ mod app {
 
     #[task]
     fn on(_: on::Context) {
-        hprintln!(">> on");
+        // hprintln!(">> on");
         let p = unsafe { psoc6_pac::Peripherals::steal() };
         p.GPIO.prt13.out_clr.write(|w| {
             w.out7().set_bit();
@@ -73,7 +77,7 @@ mod app {
 
     #[task]
     fn off(_: off::Context) {
-        hprintln!(">> off");
+        // hprintln!(">> off");
         let p = unsafe { psoc6_pac::Peripherals::steal() };
         p.GPIO.prt13.out_set.write(|w| {
             w.out7().set_bit();
