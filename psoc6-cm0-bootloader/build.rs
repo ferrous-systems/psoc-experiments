@@ -1,4 +1,4 @@
-//! This build script copies the `memory-xxxx.x` file from the crate root into
+//! This build script copies the `memory.x` file from the crate root into
 //! a directory where the linker can always find it at build time.
 //! For many projects this is optional, as the linker always searches the
 //! project root directory -- wherever `Cargo.toml` is. However, if you
@@ -15,27 +15,21 @@ use std::fs::File;
 use std::io::Write;
 use std::path::PathBuf;
 
-static MEMORY_X: &[u8] = include_bytes!("memory-raw.x");
-static MEMORY_X_BOOTLOADER: &[u8] = include_bytes!("memory-bootloader.x");
-
 fn main() {
     // Put `memory.x` in our output directory and ensure it's
     // on the linker search path.
     let out = &PathBuf::from(env::var_os("OUT_DIR").unwrap());
-
-    // the feature flag is "use-bootloader"
-    let memory_x_contents = if env::var("CARGO_FEATURE_USE_BOOTLOADER").is_ok() {
-        &MEMORY_X_BOOTLOADER
-    } else {
-        &MEMORY_X
-    };
     File::create(out.join("memory.x"))
         .unwrap()
-        .write_all(memory_x_contents)
+        .write_all(include_bytes!("memory.x"))
         .unwrap();
     println!("cargo:rustc-link-search={}", out.display());
-    println!("cargo:rerun-if-changed=memory-raw.x");
-    println!("cargo:rerun-if-changed=memory-bootloader.x");
+
+    // By default, Cargo will re-run a build script whenever
+    // any file in the project changes. By specifying `memory.x`
+    // here, we ensure the build script is only re-run when
+    // `memory.x` is changed.
+    println!("cargo:rerun-if-changed=memory.x");
 
     // Specify linker arguments.
 

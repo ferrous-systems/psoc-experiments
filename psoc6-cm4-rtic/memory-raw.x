@@ -18,6 +18,8 @@ MEMORY
    after the vector table */
 /* _stext = ORIGIN(FLASH) + 0x400; */
 
+_svectors = ORIGIN(FLASH);
+
 /* Example of putting non-initialized variables into custom RAM locations. */
 /* This assumes you have defined a region RAM2 above, and in the Rust
    sources added the attribute `#[link_section = ".ram2bss"]` to the data
