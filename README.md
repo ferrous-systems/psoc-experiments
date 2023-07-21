@@ -37,17 +37,23 @@ There are multiple cores in this SoC.
     # have downloaded the pre-built Cypress toolset. This tutorial
     # assumes the latter.
 
+    # Make sure you are in this repo
+    cd /path/to/checkout/of/psoc-experiments
+
     ${OPENOCD_ROOT}/bin/openocd -s ${OPENOCD_ROOT}/scripts
     ```
 
 2. Open another terminal
 
     ```sh
+    # Make sure you are in this repo
+    cd /path/to/checkout/of/psoc-experiments
+
     # If you have another installation of GDB,
     # e.g. `gdb-multiarch`, set
     # `export RUST_GDB=gdb-multiarch`
-
     export RUST_GDB=arm-none-eabi-gdb
+
     cd psoc6-cm4-hello-world
     cargo run --release
     ```
@@ -64,17 +70,23 @@ There are multiple cores in this SoC.
     # have downloaded the pre-built Cypress toolset. This tutorial
     # assumes the latter.
 
+    # Make sure you are in this repo
+    cd /path/to/checkout/of/psoc-experiments
+
     ${OPENOCD_ROOT}/bin/openocd -s ${OPENOCD_ROOT}/scripts
     ```
 
 2. Open another terminal
   
     ```sh
+    # Make sure you are in this repo
+    cd /path/to/checkout/of/psoc-experiments
+
     # If you have another installation of GDB,
     # e.g. `gdb-multiarch`, set
     # `export RUST_GDB=gdb-multiarch`
-
     export RUST_GDB=arm-none-eabi-gdb
+
     cd psoc6-cm0-hello-world
     cargo run --release
     ```
@@ -89,6 +101,7 @@ Check out [psoc6-cm0-bootloader/README.md](./psoc6-cm0-bootloader/README.md)
 for instructions.
 
 ## Misc. notes
+
 ### Interrupts
 
 The SVD file (and hence the PAC) describes all 187-odd interrupts. However, the
