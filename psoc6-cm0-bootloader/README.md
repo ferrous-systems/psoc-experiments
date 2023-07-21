@@ -2,7 +2,7 @@
 
 This is a promise that life will get easier this way.
 
-In this example setup, we are using the CM4 RTIC application and loading it, via the bootloader.
+In this example setup, we are using the CM4 RTIC application and loading it, via the bootloader which runs on the CM0 core. This is because when you aren't using GDB, the CM0 is the core that runs first whilst the CM4 is held in reset.
 
 ## Build
 
