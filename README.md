@@ -8,43 +8,112 @@ Schematic: <https://www.infineon.com/dgdl/Infineon-CY8CPROTO-062-4343W_Schematic
 ## Building
 
 There are multiple binary crates in this repository.
+There are multiple cores in this SoC.
 
-To run a Cortex-M4F binary:
+### Prerequisites
 
-``` console
-$ export OPENOCD_ROOT=/where/you/installed/infineon/openocd
-$ ${OPENOCD_ROOT}/bin/openocd -s ${OPENOCD_ROOT}/scripts
-<now open another terminal>
-$ rustup target add thumbv7em-none-eabihf
-$ export RUST_GDB=arm-none-eabi-gdb
-$ cd psoc6-demo-cm4
-$ cargo run --release
-```
+1. Install correct Rust targets for both cores.
 
-To run a Cortex-M0+ binary:
+    ```sh
+    rustup target add thumbv7em-none-eabihf
+    rustup target add thumbv6m-none-eabi
+    ```
 
-``` console
-$ export OPENOCD_ROOT=/where/you/installed/infineon/openocd
-$ ${OPENOCD_ROOT}/bin/openocd -s ${OPENOCD_ROOT}/scripts
-<now open another terminal>
-$ rustup target add thumbv6m-none-eabihf
-$ export RUST_GDB=arm-none-eabi-gdb
-$ cd psoc6-demo-cm0
-$ cargo run --release
-```
+2. Make sure you have GDB installed.
+3. Make sure your `openocd` installation is the patched version from Infineon.
+    Regular off-the-shelf won't work. Download the
+    [Toolset from Infineon](https://softwaretools.infineon.com/tools/com.ifx.tb.tool.cypressprogrammer).
+    We used Version 4.2.0.999 for this work.
+4. Export the correct environment variable for `openocd`
+
+    ```sh
+    export OPENOCD_ROOT=/where/you/installed/infineon/openocd
+    ```
+
+    Please make sure this is available to all shell/terminal processes,
+    so it is good to set this in your "rc".
+
+### Run a Cortex-M4F binary
+
+1. Open terminal
+
+    ```sh
+    # The scripts path might be different depending on whether you
+    # have built and installed Infineons openocd yourself or if
+    # have downloaded the pre-built Cypress toolset. This tutorial
+    # assumes the latter.
+
+    # Make sure you are in this repo
+    cd /path/to/checkout/of/psoc-experiments
+
+    ${OPENOCD_ROOT}/bin/openocd -s ${OPENOCD_ROOT}/scripts
+    ```
+
+2. Open another terminal
+
+    ```sh
+    # Make sure you are in this repo
+    cd /path/to/checkout/of/psoc-experiments
+
+    # If you have another installation of GDB,
+    # e.g. Ubuntu calls its GDB `gdb-multiarch`, set
+    # `export RUST_GDB=gdb-multiarch`
+    export RUST_GDB=arm-none-eabi-gdb
+
+    cd psoc6-cm4-hello-world
+    cargo run --release
+    ```
+
+### Run a Cortex-M0+ binary
+
+1. Open terminal
+
+    ```sh
+    # The scripts path might be different depending on whether you
+    # have built and installed Infineons openocd yourself or if
+    # have downloaded the pre-built Cypress toolset. This tutorial
+    # assumes the latter.
+
+    # Make sure you are in this repo
+    cd /path/to/checkout/of/psoc-experiments
+
+    ${OPENOCD_ROOT}/bin/openocd -s ${OPENOCD_ROOT}/scripts
+    ```
+
+2. Open another terminal
+  
+    ```sh
+    # Make sure you are in this repo
+    cd /path/to/checkout/of/psoc-experiments
+
+    # If you have another installation of GDB,
+    # e.g. Ubuntu calls its GDB `gdb-multiarch`, set
+    # `export RUST_GDB=gdb-multiarch`
+    export RUST_GDB=arm-none-eabi-gdb
+
+    cd psoc6-cm0-hello-world
+    cargo run --release
+    ```
 
 So if you want your code to run outside of the debugger, compile it for the
 Cortex-M0+ (thumbv6m-none-eabi). Also if you want your code to run outside of
 the debugger, you can't use semihosting.
 
-## Interrupts
+### Run bootloader application
+
+Check out [psoc6-cm0-bootloader/README.md](./psoc6-cm0-bootloader/README.md)
+for instructions.
+
+## Misc. notes
+
+### Interrupts
 
 The SVD file (and hence the PAC) describes all 187-odd interrupts. However, the
 Cortex-M0+ core only has 8 external and 8 internal interrupts. You therefore
 can't use the PAC in "rt" mode on the Cortex-M0+ core - the interrupt vector
 table won't fit.
 
-## Booting
+### Booting
 
 Document AN215656 *PSoC™ 6 MCU dual-core system design* says:
 
@@ -101,13 +170,12 @@ firmware as a static `[u8; nnnn]` within the Cortex-M0+ firmware, located within
 an appropriate section so it is linked into memory in the Cortex-M0+ binary at
 the same place the Cortex-M4 linker thought it was going to be.
 
-# License
+## License
 
 This template is licensed under either of
 
 - Apache License, Version 2.0 ([LICENSE-APACHE](LICENSE-APACHE) or
-  http://www.apache.org/licenses/LICENSE-2.0)
-
+  <http://www.apache.org/licenses/LICENSE-2.0>)
 - MIT license ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT)
 
 at your option.
