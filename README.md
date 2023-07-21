@@ -50,7 +50,7 @@ There are multiple cores in this SoC.
     cd /path/to/checkout/of/psoc-experiments
 
     # If you have another installation of GDB,
-    # e.g. `gdb-multiarch`, set
+    # e.g. Ubuntu calls its GDB `gdb-multiarch`, set
     # `export RUST_GDB=gdb-multiarch`
     export RUST_GDB=arm-none-eabi-gdb
 
@@ -83,7 +83,7 @@ There are multiple cores in this SoC.
     cd /path/to/checkout/of/psoc-experiments
 
     # If you have another installation of GDB,
-    # e.g. `gdb-multiarch`, set
+    # e.g. Ubuntu calls its GDB `gdb-multiarch`, set
     # `export RUST_GDB=gdb-multiarch`
     export RUST_GDB=arm-none-eabi-gdb
 
