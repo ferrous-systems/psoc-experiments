@@ -24,14 +24,20 @@ There are multiple cores in this SoC.
     Regular off-the-shelf won't work. Download the
     [Toolset from Infineon](https://softwaretools.infineon.com/tools/com.ifx.tb.tool.cypressprogrammer).
     We used Version 4.2.0.999 for this work.
+4. Export the correct environment variable for `openocd`
+
+    ```sh
+    export OPENOCD_ROOT=/where/you/installed/infineon/openocd
+    ```
+
+    Please make sure this is available to all shell/terminal processes,
+    so it is good to set this in your "rc".
 
 ### Run a Cortex-M4F binary
 
 1. Open terminal
 
     ```sh
-    export OPENOCD_ROOT=/where/you/installed/infineon/openocd
-
     # The scripts path might be different depending on whether you
     # have built and installed Infineons openocd yourself or if
     # have downloaded the pre-built Cypress toolset. This tutorial
@@ -63,8 +69,6 @@ There are multiple cores in this SoC.
 1. Open terminal
 
     ```sh
-    export OPENOCD_ROOT=/where/you/installed/infineon/openocd
-
     # The scripts path might be different depending on whether you
     # have built and installed Infineons openocd yourself or if
     # have downloaded the pre-built Cypress toolset. This tutorial
