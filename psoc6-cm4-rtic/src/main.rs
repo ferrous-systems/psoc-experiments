@@ -26,6 +26,9 @@ mod app {
         }
         // hprintln!("VTOR was: 0x{:08x}", cx.core.SCB.vtor.read());
         unsafe {
+            // For some reason, when the CM4 binary runs, the VTOR has
+            // not been set to the value we put in the cm4_vector_table_base
+            // register, so we manually have to patch it once the CM4 is running
             cx.core.SCB.vtor.write(&_svectors as *const u32 as u32);
         }
         // hprintln!("VTOR is : 0x{:08x}", cx.core.SCB.vtor.read());
