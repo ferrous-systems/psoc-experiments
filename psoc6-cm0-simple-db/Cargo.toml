@@ -1,0 +1,25 @@
+[package]
+authors = ["Jonathan Pallant (Ferrous Systems) <jonathan.pallant@ferrous-systems.com>"]
+edition = "2021"
+readme = "README.md"
+name = "psoc6-cm0-simple-db"
+version = "0.1.0"
+
+[dependencies]
+cortex-m = { version = "0.7.0", features=["inline-asm"] }
+cortex-m-rt = "0.7"
+cortex-m-semihosting = "0.5"
+panic-semihosting = "0.6"
+psoc6-pac = { path = "../psoc6-pac" }
+simple-db = { path = "./simple-db" }
+
+# this lets you use `cargo fix`!
+[[bin]]
+name = "psoc6-cm0-simple-db"
+test = false
+bench = false
+
+[profile.release]
+codegen-units = 1 # better optimizations
+debug = true # symbols are nice and they don't increase the size on Flash
+lto = true # better optimizations
