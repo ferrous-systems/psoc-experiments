@@ -1,8 +1,8 @@
 #![no_std]
 
 #[derive(Eq, PartialEq, Debug)]
-pub enum Command<'a> {
-    Publish(&'a str),
+pub enum Command<'msg> {
+    Publish(&'msg str),
     Retrieve,
 }
 
@@ -133,7 +133,7 @@ mod tests {
     fn test_empty_publish() {
         let line = "PUBLISH \n";
         let result: Result<Command, Error> = parse(line);
-        let expected = Ok(Command::Publish("".into()));
+        let expected = Ok(Command::Publish(""));
         assert_eq!(result, expected);
     }
 
