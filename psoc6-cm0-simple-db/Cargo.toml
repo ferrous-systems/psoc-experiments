@@ -11,7 +11,7 @@ cortex-m-rt = "0.7"
 cortex-m-semihosting = "0.5"
 panic-semihosting = "0.6"
 psoc6-pac = { path = "../psoc6-pac" }
-simple-db = { path = "./simple-db" }
+simple-db = { path = "../simple-db" }
 
 # this lets you use `cargo fix`!
 [[bin]]
