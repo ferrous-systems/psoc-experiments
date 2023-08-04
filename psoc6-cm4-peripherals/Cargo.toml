@@ -1,0 +1,24 @@
+[package]
+authors = ["Jonathan Pallant (Ferrous Systems) <jonathan.pallant@ferrous-systems.com>", "Amanjeev Sethi (Ferrous Systems) <amanjeev.sethi@ferrous-systems.com>"]
+name = "psoc6-cm4-peripherals"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+cortex-m = { version = "0.7.0", features = ["inline-asm"] }
+cortex-m-rt = "0.7"
+cortex-m-semihosting = "0.5"
+panic-semihosting = "0.6"
+psoc6-pac = { path = "../psoc6-pac" }
+
+[[bin]]
+name = "psoc6-cm4-peripherals"
+test = false
+bench = false
+
+[profile.release]
+codegen-units = 1
+debug = true
+lto = true
