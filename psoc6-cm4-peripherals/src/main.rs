@@ -26,9 +26,15 @@ fn main() -> ! {
     loop {
         delay.delay_ms(1000);
         hprintln!("---- Loop start ----");
+        hprintln!("Button is {}", if p.GPIO.prt0.in_.read().in4().bit_is_clear() { "pressed" } else { "released" });
 
-        let x = p.GPIO.prt8.cfg.read().bits();
-        hprintln!("READING prt8: {:#32x}", x);
+        hprintln!("Capsense Button is {}", if p.GPIO.prt8.in_.read().in0().bit_is_clear() { "p8_0 pressed" } else { "p8_0 released" });
+        hprintln!("Capsense Button is {}", if p.GPIO.prt8.in_.read().in1().bit_is_clear() { "p8_1 pressed" } else { "p8_1 released" });
+        hprintln!("Capsense Button is {}", if p.GPIO.prt1.in_.read().in0().bit_is_clear() { "p1_0 pressed" } else { "p1_0 released" });
+        hprintln!("Capsense Button is {}", if p.GPIO.prt1.out.read().out0().bit_is_clear() { "p1_0 pressed" } else { "p1_0 released" });
+
+
+
 
         // PORT8_1 is supposedly a button on the Capsense
         // set the bit to ... high? on?
@@ -41,8 +47,7 @@ fn main() -> ! {
 
         // PORT8_3 to PORT8_7 are slider intervals on the Capsense
         // p.GPIO.prt8.cfg.write(|w| {
-        //     w.in_en7().set_bit();
-        //     w
+        //     w.in_en7().set_bit();r`          //     w
         // });
         // hprintln!("Port8 bits: {:#32x}", p.GPIO.prt8.cfg.read().bits());
         // trying to find out how to set the sense_duty
